@@ -10,8 +10,10 @@ There is also a mistake in the current board files- under each LED should be a r
 
 ![Snowflake Schematic](/documentation/img/snowflake_schematic.png)
 
-![Snowflake Render A](/documentation/img/snowflake_front_render.png)
-![Snowflake Render B](/documentation/img/snowflake_back_render.png)
+
+Board Front             |  Board Back
+:-------------------------:|:-------------------------:
+![](/documentation/img/snowflake_front_render.png)  |  ![](/documentation/img/snowflake_back_render.png)
 
 ### BOM
 A complete BOM can be found under documentation/snowflake_bom.csv, and can be uploaded to DigiKey for easy ordering. At the time of writing, the total DigiKey order is around $13. Boards can be ordered from anywhere that'll do white solder mask (I used PCBWay) and should be fairly cheap as well. You can order a stencil if desired, but I found it pretty easy to hand solder this one.
