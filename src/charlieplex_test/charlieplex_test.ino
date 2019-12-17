@@ -8,13 +8,15 @@
    http://creativecommons.org/licenses/by/4.0/
 */
 
- #define BUTTON_PIN 0
+#include "transition.h"
+
+#define BUTTON_PIN 0
 
 uint8_t lastButtonState = HIGH;
 uint8_t buttonState = HIGH;
 uint8_t mode = 0;
 unsigned long lastDebounceTime = 0;
-uint32_t debounceDelay = 2;
+uint32_t debounceDelay = 1;
 
 uint8_t Level[12] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; 
 
@@ -61,34 +63,106 @@ void setup() {
   pinMode(BUTTON_PIN, INPUT);
 }
 
-void runRamp(uint8_t numLeds, int8_t startLevel, int8_t endLevel, int32_t rampTime, uint8_t invertInner)
+transition_t createTransition(uint8_t led, int8_t startLevel, int8_t endLevel, uint32_t offset, uint32_t rampTime)
+{
+  transition_t newTransition;
+  newTransition.led = led;
+  newTransition.currValue = startLevel;
+  newTransition.endValue = endLevel;
+  newTransition.stepDistance = endLevel > startLevel ? 1 : -1;
+  newTransition.stepTime = rampTime / (endLevel - startLevel) * newTransition.stepDistance;
+  newTransition.currTime = millis() + offset;
+  newTransition.endTime = newTransition.currTime + rampTime;
+
+  return newTransition;
+}
+
+int transitionCallback(transition_t tr)
+{
+  if(millis() >= tr.currTime + tr.stepTime)
+  {
+    tr.currValue += tr.stepDistance;
+    tr.currTime += tr.stepTime;
+    Level[Order[tr.led]] = logLevels[tr.currValue];
+
+    if(tr.currValue == tr.endValue) return 0;
+
+    return 1;
+  }
+
+  return 1;
+}
+
+void fadeModeCallback()
+{ 
+  transition_t outer[6];
+  for(int i = 0; i < 6; i++)
+  {
+    outer[i] = createTransition(i, 0, 63, 0, 2000);
+  }
+
+  int checkRunning = 1;
+
+  while(checkRunning)
+  {
+    checkRunning = 0;
+    for(int i = 0; i < 6; i++)
+    {
+      int ret_val = transitionCallback(outer[i]);
+      if(ret_val == 1) checkRunning = 1;
+    }
+  }
+
+  for(int i = 0; i < 6; i++)
+  {
+    outer[i] = createTransition(i, 63, 0, 0, 2000);
+  }
+
+  checkRunning = 1;
+
+  while(checkRunning)
+  {
+    checkRunning = 0;
+    for(int i = 0; i < 6; i++)
+    {
+      int ret_val = transitionCallback(outer[i]);
+      if(ret_val == 1) checkRunning = 1;
+    }
+  }
+}
+
+void runRamp(uint8_t numLeds, int8_t startLevel, int8_t endLevel, int32_t rampTime)
 {
   int8_t diff = endLevel > startLevel ? 1 : -1;
   uint32_t msPerLevel = rampTime / (endLevel - startLevel) * diff;
 
   uint8_t currValue = startLevel;
   uint8_t currValueLog = logLevels[currValue];
+  unsigned long currTime;
+  unsigned long startTime = millis();
+  unsigned long endTime = startTime + rampTime;
   while(currValue != endLevel)
   {
-    currValue += diff;
-    currValueLog = logLevels[currValue];
-    for(uint8_t i = 0; i < numLeds; i++)
+    currTime = millis();
+    if(currTime >= startTime + msPerLevel)
     {
-      Level[Order[outerLeds[i]]] = currValueLog;
-      if(invertInner) Level[Order[outerLeds[i] + 6]] = endLevel > startLevel? logLevels[endLevel - currValue] : logLevels[startLevel - currValue];
+      startTime += msPerLevel;
+      currValue += diff;
+      currValueLog = logLevels[currValue];
+      for(uint8_t i = 0; i < numLeds; i++)
+      {
+        Level[Order[outerLeds[i]]] = currValueLog;
+        if(mode) Level[Order[outerLeds[i] + 6]] = endLevel > startLevel? logLevels[endLevel - currValue] : logLevels[startLevel - currValue];
+      }
     }
-    delay(msPerLevel);
+
+    checkButton();
   }
 
 }
 
-void fadeProgram(uint8_t invert)
+void checkButton()
 {
-  runRamp(6, 0, 63, 2500, invert);
-  runRamp(6, 63, 0, 2500, invert);
-}
-
-void loop () {
   uint8_t reading = digitalRead(BUTTON_PIN);
 
   if (reading != lastButtonState) {
@@ -111,15 +185,15 @@ void loop () {
     }
   }
 
-  if(mode == 0)
-  {
-    fadeProgram(1);
-    //Level[Order[0]] = 63;
-  }
+  return mode;
+}
 
-  else if(mode == 1)
-  {
-    fadeProgram(0);
-    //Level[Order[1]] = 63;
-  }
+void fadeProgram()
+{
+  runRamp(6, 0, 63, 2500);
+  runRamp(6, 63, 0, 2500);
+}
+
+void loop () {
+  fadeProgram();
 }
