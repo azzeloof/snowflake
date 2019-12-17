@@ -53,6 +53,12 @@ void allOnProgram()
   checkButton();
 }
 
+void allOffProgram()
+{
+  clearLeds();
+  checkButton();
+}
+
 void loop () {
   switch(mode) {
     case 0:
@@ -61,8 +67,9 @@ void loop () {
     case 1:
       allOnProgram();
       break;
+    case 2:
     default:
-      allOnProgram();
+      allOffProgram();
       break;
   }
 }
