@@ -11,6 +11,7 @@
 #include "modeButton.h"
 #include "leds.h"
 #include "ringFade.h"
+#include "twinkle.h"
 
 // Timer/Counter1 overflow interrupt
 ISR(TIM1_COMPA_vect) {
@@ -62,12 +63,14 @@ void allOffProgram()
 void loop () {
   switch(mode) {
     case 0:
-      fadeProgram();
+      twinkleProgram();
       break;
     case 1:
-      allOnProgram();
+      fadeProgram();
       break;
     case 2:
+      allOnProgram();
+      break;    
     default:
       allOffProgram();
       break;

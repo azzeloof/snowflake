@@ -2,7 +2,7 @@
 
 uint8_t outerLeds[6] = {0,1,2,3,4,5};
 
-int runRamp(uint8_t numLeds, int8_t startLevel, int8_t endLevel, int32_t rampTime)
+int runRampRing(uint8_t numLeds, int8_t startLevel, int8_t endLevel, int32_t rampTime)
 {
   int8_t diff = endLevel > startLevel ? 1 : -1;
   uint32_t msPerLevel = rampTime / (endLevel - startLevel) * diff;
@@ -34,6 +34,6 @@ int runRamp(uint8_t numLeds, int8_t startLevel, int8_t endLevel, int32_t rampTim
 
 void fadeProgram()
 {
-  if(runRamp(6, 0, 63, 2500) != 0) return;
-  if(runRamp(6, 63, 0, 2500) != 0) return;
+  if(runRampRing(6, 0, 63, 2500) != 0) return;
+  if(runRampRing(6, 63, 0, 2500) != 0) return;
 }

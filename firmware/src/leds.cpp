@@ -1,7 +1,7 @@
 #include "leds.h"
 
-uint8_t Level[12];
-uint8_t Order[12];
+uint8_t Level[NUM_LEDS];
+uint8_t Order[NUM_LEDS];
 uint8_t LogLevels[64] = { 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,
                           1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  3,  3,
                           3,  4,  4,  4,  5,  5,  6,  7,  7,  8,  9, 10, 11, 12, 14, 15, 17,
@@ -34,9 +34,14 @@ void setLed(uint8_t led, uint8_t level)
     Level[Order[led]] = LogLevels[level];
 }
 
+void setLedLog(uint8_t led, uint8_t level)
+{
+  Level[Order[led]] = level;
+}
+
 void clearLeds()
 {
-  for(int i = 0; i < 12; i++)
+  for(int i = 0; i < NUM_LEDS; i++)
   {
     Level[Order[i]] = 0;
   }
@@ -44,7 +49,7 @@ void clearLeds()
 
 void allOn()
 {
-  for(int i = 0; i < 12; i++)
+  for(int i = 0; i < NUM_LEDS; i++)
   {
     Level[Order[i]] = 63;
   } 
