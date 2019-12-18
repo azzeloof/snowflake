@@ -5,4 +5,4 @@
 #include "leds.h"
 #include <stdlib.h>
 
-void twinkleProgram();
+void twinkleProgram(uint32_t rampSpeed, uint32_t holdLength);

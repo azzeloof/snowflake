@@ -63,14 +63,14 @@ void allOffProgram()
 void loop () {
   switch(mode) {
     case 0:
-      twinkleProgram();
+      twinkleProgram(20, 200);
       break;
     case 1:
       fadeProgram();
       break;
     case 2:
       allOnProgram();
-      break;    
+      break;   
     default:
       allOffProgram();
       break;

@@ -25,18 +25,29 @@ void initOrder()
 
 void setupLeds()
 {
-    initOrder();
-    clearLeds(); 
+  initOrder();
+  clearLeds(); 
 }
 
 void setLed(uint8_t led, uint8_t level)
 {
+  if(led >= 0 && led < NUM_LEDS)
+  {
+    if(level < 0) level = 0;
+    if(level > 63) level = 63;
     Level[Order[led]] = LogLevels[level];
+
+  }
 }
 
 void setLedLog(uint8_t led, uint8_t level)
 {
-  Level[Order[led]] = level;
+  if(led >= 0 && led < NUM_LEDS)
+  {
+    if(level < 0) level = 0;
+    if(level > 63) level = 63;
+    Level[Order[led]] = level;
+  }
 }
 
 void clearLeds()

@@ -12,8 +12,14 @@ void resetCurrVals()
     }
 }
 
-int runRampTwinkle(uint8_t numLeds, int32_t msPerLevel)
+int runRampTwinkle(uint8_t numLeds, uint32_t msPerLevel)
 {
+    if(numLeds > 6) return 0;
+    for(int i = 0; i < numLeds; i++)
+    {
+        if(randLeds[i] < 0 || randLeds[i] >= NUM_LEDS) return 0;
+    }
+
     int8_t diff;
     uint8_t done = 0;
     unsigned long startTime = millis();
@@ -39,6 +45,8 @@ int runRampTwinkle(uint8_t numLeds, int32_t msPerLevel)
             
         }
 
+        if(currTime - startTime > msPerLevel * 65) return 0;
+
         if (checkButton() != 0) return 1;
     }
 
@@ -62,7 +70,7 @@ int hold(uint32_t holdTime)
     return 0;
 }
 
-void twinkleProgram()
+void twinkleProgram(uint32_t rampSpeed, uint32_t holdLength)
 {
     srand(millis());
 
@@ -74,8 +82,8 @@ void twinkleProgram()
         srand(millis());
         endLevel[i] = (rand() % 63);
     }
-    if(runRampTwinkle(numLeds, 20) != 0) return;
+    if(runRampTwinkle(numLeds, rampSpeed) != 0) return;
 
     
-    if(hold(100) != 0) return;
+    if(hold(holdLength) != 0) return;
 }
