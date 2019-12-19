@@ -4,8 +4,8 @@
 #define DEBOUNCE_DELAY 1
 
 uint8_t mode;
-uint8_t lastButtonState = HIGH;
-uint8_t buttonState = HIGH;
+uint8_t lastButtonState = LOW;
+uint8_t buttonState = LOW;
 unsigned long lastDebounceTime = 0;
 
 void setupButton()
@@ -32,7 +32,7 @@ int checkButton()
       buttonState = reading;
 
       // only toggle if the new button state is HIGH
-      if (buttonState == LOW) {
+      if (buttonState == HIGH) {
         mode = (mode + 1) % NUM_MODES;
         clearLeds();
         return 1;
