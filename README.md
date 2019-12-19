@@ -6,7 +6,7 @@ The board consists of twelve reverse-mounted LEDs [charlieplexed](https://en.wik
 
 The final board isn't the most elegant thing- there are several zero-ohm jumpers, and there's even a "decorative" wire that wraps around the snowflake that is actually a ground line I didn't want to route across the front of the ornament.
 
-There is also a mistake in the current board files- under each LED should be a rectange on the f.mask layer so that the area below the LED is free of solder mask. Instead, the rectangle is a keepout zone, which is useless in this situation. My solution was to scrape the areas clear with a knife but I don't recommend it because FT4 dust is nasty. The better solution is to fix the board files before ordering.
+There is also a mistake in the current board files- under each LED should be a rectange on the f.mask layer so that the area below the LED is free of solder mask. Instead, the rectangle is a keepout zone, which is useless in this situation. My solution was to scrape the areas clear with a knife but I don't recommend it because FR4 dust is nasty. The better solution is to fix the board files before ordering.
 
 ![Snowflake Schematic](/documentation/img/snowflake_schematic.png)
 
@@ -21,3 +21,4 @@ A complete BOM can be found under documentation/snowflake_bom.csv, and can be up
 ## Software
 
 @satrat
+Coming soon to a repo near you
