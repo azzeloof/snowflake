@@ -3,7 +3,7 @@
 #include "Arduino.h"
 #include "leds.h"
 
-#define NUM_MODES 3
+#define NUM_MODES 4
 
 extern uint8_t mode;
 

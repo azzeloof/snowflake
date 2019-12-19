@@ -45,9 +45,11 @@ int runRampTwinkle(uint8_t numLeds, uint32_t msPerLevel)
             
         }
 
-        if(currTime - startTime > msPerLevel * 65) return 0;
-
-        if (checkButton() != 0) return 1;
+        if (checkButton() != 0) 
+        {
+            resetCurrVals();
+            return 1;
+        }
     }
 
   return 0;
@@ -79,11 +81,9 @@ void twinkleProgram(uint32_t rampSpeed, uint32_t holdLength)
     {
         srand(millis());
         randLeds[i] = rand() % NUM_LEDS;
-        srand(millis());
         endLevel[i] = (rand() % 63);
     }
     if(runRampTwinkle(numLeds, rampSpeed) != 0) return;
 
-    
-    if(hold(holdLength) != 0) return;
+    //if(hold(holdLength) != 0) return;
 }
