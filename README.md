@@ -2,7 +2,7 @@
  A PCB holiday ornament with lots of blinking LEDs!
 
 ## Hardware
-The board consists of twelve reverse-mounted LEDs [charlieplexed](https://en.wikipedia.org/wiki/Charlieplexing) and hooked up to an ATtiny85. Each LED is individually adderssable, even though only four of the ATtiny's pins are being used (Charlieplexing is magic)! The board also has a pushbutton for switching between modes. The ornament is powered via six CR1225 batteries.
+The board consists of twelve reverse-mounted LEDs [charlieplexed](https://en.wikipedia.org/wiki/Charlieplexing) and hooked up to an ATtiny85. Each LED is individually addressable, even though only four of the ATtiny's pins are being used (Charlieplexing is magic)! The board also has a pushbutton for switching between modes. The ornament is powered via six CR1225 batteries.
 
 The final board isn't the most elegant thing- there are several zero-ohm jumpers, and there's even a "decorative" wire that wraps around the snowflake that is actually a ground line I didn't want to route across the front of the ornament.
 
